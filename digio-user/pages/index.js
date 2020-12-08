@@ -280,6 +280,7 @@ function Index() {
   return (
 
     <Layout>
+      
       <div className="sweet-loading">
         <HashLoader
           css={override}

@@ -22,7 +22,6 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import service from '../services/services'
 import Link from 'next/link'
 import Router from 'next/router'
-
 const drawerWidth = 300;
 
 const handleClickPath = (path) => Router.push({
