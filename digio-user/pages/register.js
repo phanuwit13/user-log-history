@@ -1,0 +1,211 @@
+import React, { useState, useEffect } from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import service from '../services/services'
+import Swal from "sweetalert2";
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
+
+export default function Register() {
+  const classes = useStyles();
+  const [form, setForm] = useState({
+    username: '',
+    password: '',
+    passwordCon: '',
+    firstname: '',
+    lastname: ''
+  });
+  const setValue = (e) => {
+
+    setForm({ ...form, [e.target.name]: e.target.value })
+    console.log(form)
+
+  }
+  const RegisterSubmit = (props) => {
+    console.log(form)
+    Object.keys(form).forEach((key) => {
+      console.log(key + " : " + form[key])
+      if (form[key] === "") {
+        Swal.fire({
+          title: "",
+          text: "กรุณากรอกข้อมูลให้ครบ",
+          icon: 'error',
+        })
+        return
+      }
+    });
+    if (form['password'] !== form['passwordCon']) {
+      Swal.fire({
+        title: "",
+        text: "Password ไม่ตรงกัน",
+        icon: 'error',
+      })
+      return
+    }
+    else {
+    }
+    service.httpPost("register", form).then((value) => {
+      console.log(value)
+      if (value.success) {
+        // localStorage.setItem('userLogin', JSON.stringify(value.data));
+        Swal.fire({
+          title: "",
+          text: value.message,
+          icon: 'success',
+        }).then(() => {
+          console.log("default")
+          service.toPath("/login")
+        })
+      }
+      else {
+        service.showAlert("", value.message, "error")
+      }
+    })
+  }
+
+
+
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          สมัครสมาชิก
+        </Typography>
+        <form className={classes.form} noValidate>
+          <Grid container spacing={2}>
+
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Username"
+                name="username"
+                onChange={setValue}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                autoComplete="current-password"
+                onChange={setValue}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="passwordCon"
+                label="Password Confirm"
+                type="password"
+                onChange={setValue}
+                autoComplete="current-password"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="fname"
+                name="firstname"
+                variant="outlined"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                onChange={setValue}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="lastname"
+                label="Last Name"
+                name="lastname"
+                autoComplete="lname"
+                onChange={setValue}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={RegisterSubmit}
+          >
+            Sign Up
+          </Button>
+          <Grid container justify="flex-end">
+            <Grid item>
+
+              <Link
+                variant="body2"
+                onClick={() => {
+                  service.toPath('/login')
+                }}>
+                Already have an account? Sign in
+      </Link>
+            </Grid>
+
+          </Grid>
+        </form>
+      </div>
+      <Box mt={5}>
+        <Copyright />
+      </Box>
+    </Container>
+  );
+}
