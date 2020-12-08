@@ -38,7 +38,7 @@ db.status = require('../model/statuslogin.js')(sequelize, Sequelize);
 // db.status.hasMany(db.loglogin);
 // db.loglogin.belongsTo(db.status);
 
-// db.status.hasMany(db.loglogin, {foreignKey : 'loginId'});
+// db.loglogin.belongsTo(db.user, {foreignKey : 'username'});
 db.loglogin.belongsTo(db.status, {foreignKey : 'statusId'})
 
 
