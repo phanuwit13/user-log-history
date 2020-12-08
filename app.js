@@ -17,15 +17,11 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, 'digio-user/out')));
+app.use(express.static(path.join(__dirname, '/digio-user/out')));
 
 // simple route
 app.get("/test", (req, res) => {
     res.json({ message: "Welcome to bezkoder application." });
-});
-
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname+'/digio-user/out/index.html'));
 });
 
 app.get('*', (req,res) =>{
@@ -34,10 +30,10 @@ app.get('*', (req,res) =>{
 
 
 // set port, listen for requests
-// const PORT = process.env.PORT || 8080;
-// app.listen(PORT, () => {
-//     console.log(`Server is running on port ${PORT}.`);
-// });
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+});
 
 
 const user = require('./routes/user');
