@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Router from 'next/router'
 
 const http = axios.create({
-  baseURL: "http://10.0.10.121:3000/user/",
+  baseURL: "https://user-login-history.herokuapp.com/user/",
 });
 
 class AppService {
