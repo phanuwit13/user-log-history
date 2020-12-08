@@ -24,6 +24,10 @@ app.get("/test", (req, res) => {
     res.json({ message: "Welcome to bezkoder application." });
 });
 
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname+'/digio-user/out/index.html'));
+});
+
 app.get('*', (req,res) =>{
     res.sendFile(path.join(__dirname+'/digio-user/out/index.html'));
 });
